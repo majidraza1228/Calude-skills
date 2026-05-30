@@ -4,21 +4,41 @@
 
 Built from 75+ tests across real skill implementations. Every pattern here solves a specific failure mode — skills that don't trigger, output that drifts between runs, safety rules that never fire, and AI features that ship without success criteria or cost controls.
 
-## Quick Start
+## Getting Started
+
+**Pick who you are → follow the guide → up and running in 5 minutes.**
+
+| I am a... | Start here |
+|---|---|
+| **Developer** writing code daily | [Developer guide →](docs/getting-started.md#developer) |
+| **Project Manager** running sprints | [PM guide →](docs/getting-started.md#project-manager) |
+| **User** just wanting to use the skills | [User guide →](docs/getting-started.md#user) |
+
+**Then pick your tool:**
+
+| Tool | Setup guide |
+|---|---|
+| Claude Code | [claude-code-setup.md](docs/claude-code-setup.md) |
+| VS Code + Copilot | [vscode-setup.md](docs/vscode-setup.md) |
+| Cursor | [cursor-setup.md](docs/cursor-setup.md) |
+| OpenAI Codex | [codex-setup.md](docs/codex-setup.md) |
+| Windsurf | [windsurf-setup.md](docs/windsurf-setup.md) |
+| Gemini CLI | [gemini-cli-setup.md](docs/gemini-cli-setup.md) |
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/majidraza1228/Calude-skills.git
-cd Calude-skills
+# Clone the repo
+git clone https://github.com/majidraza1228/claude-skills.git
+cd claude-skills
 
-# 2. Audit your existing skills
-./scripts/audit-skills.sh /path/to/your/skills
+# Install for Claude Code (most features)
+./scripts/install-skills.sh --global
 
-# 3. Copy a starter skill
-cp dev-pm-skills/code-review/SKILL.md /path/to/your/skills/my-new-skill/SKILL.md
-
-# 4. Export to your tool of choice
-./scripts/export-skills.sh all   # or: copilot | codex | cursor | windsurf | gemini
+# Or export for any other tool
+./scripts/export-skills.sh cursor     # Cursor
+./scripts/export-skills.sh copilot   # VS Code + Copilot
+./scripts/export-skills.sh codex     # OpenAI Codex
+./scripts/export-skills.sh windsurf  # Windsurf
+./scripts/export-skills.sh gemini    # Gemini CLI
 ```
 
 ## The 11 Patterns
