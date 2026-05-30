@@ -153,14 +153,21 @@ Calude-skills/
 │   ├── codex-setup.md       ← OpenAI Codex
 │   ├── windsurf-setup.md    ← Windsurf
 │   └── gemini-cli-setup.md  ← Gemini CLI
-├── dev-pm-skills/                   ← Developer & PM skills (edit these)
+├── dev-pm-skills/                   ← Developer & PM skills (22 skills)
 │   ├── code-review/SKILL.md
 │   ├── commit-message/SKILL.md
-│   ├── doc-generator/SKILL.md
-│   ├── api-design/SKILL.md
-│   ├── security/SKILL.md
-│   ├── tdd/SKILL.md
-│   └── daily-checkin/               ← Agent PM skills
+│   ├── daily-checkin/               ← Agent PM skills
+│   └── ...19 more
+├── extended-skills/                 ← Creative, product & personal skills (9 skills)
+│   ├── slides/SKILL.md
+│   ├── strategy-writer/SKILL.md
+│   ├── spec-writer/SKILL.md
+│   ├── exec-reviewer/SKILL.md
+│   ├── no-ai-slop/SKILL.md
+│   ├── infographic-designer/SKILL.md
+│   ├── personal-advisor/SKILL.md
+│   ├── weekend-planner/SKILL.md
+│   └── skill-editor/SKILL.md
 ├── scripts/
 │   ├── export-skills.sh             ← Export to any tool format
 │   ├── audit-skills.sh              ← Audit skills for pattern violations

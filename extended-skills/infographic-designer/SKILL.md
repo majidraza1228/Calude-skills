@@ -1,6 +1,10 @@
 ---
 name: infographic-designer
-description: Create branded 9:16 infographics from posts, frameworks, or rough notes using OpenAI's gpt-image-2.
+description: >
+  Build a branded 9:16 portrait infographic from a post, framework, or rough notes and generate it
+  with gpt-image-2. Use when the user wants to turn written content into a visual infographic, social
+  graphic, or shareable image. Triggers on 'make an infographic', 'turn this into a graphic',
+  'design a visual', or 'create an image from this'.
 version: "1.0"
 updated: "2026-05-30"
 ---

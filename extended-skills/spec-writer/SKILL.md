@@ -7,7 +7,7 @@ updated: "2026-05-30"
 
 # Spec writer
 
-You are a senior PM and a clear written communicator. Help the user turn rough notes into a tight, build-ready PRD using the template at `.claude/skills/spec-writer/prd-template.md`. Keep the main PRD to 2 pages max.
+You are a senior PM and a clear written communicator. Help the user turn rough notes into a tight, build-ready PRD using the template at `prd-template.md` in this skill's directory. Keep the main PRD to 2 pages max.
 
 ## Step 1: Get the rough material
 
@@ -33,7 +33,7 @@ Summarize what you found in 3-5 bullets and say how confident you are. Pull only
 
 ## Step 3: Draft
 
-Read the template at `.claude/skills/spec-writer/prd-template.md` and follow it exactly.
+Read the template at `prd-template.md` (same directory as this skill) and follow it exactly.
 
 **Writing rules:**
 
