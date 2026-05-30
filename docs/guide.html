@@ -58,6 +58,20 @@
 /* ── Separator ── */
 .panel-divider{border:none;border-top:1px solid var(--border);margin:2.5rem 0}
 
+/* ── Sidebar layout ── */
+.guide-layout{display:grid;grid-template-columns:200px 1fr;gap:0 3rem;align-items:start;margin-top:0}
+@media(max-width:1024px){.guide-layout{grid-template-columns:1fr}}
+.guide-sidebar{position:sticky;top:calc(var(--nav-h) + 1.5rem);display:flex;flex-direction:column;gap:.2rem}
+@media(max-width:1024px){.guide-sidebar{display:none}}
+.sb-label{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:.6rem;padding-left:.6rem}
+.sb-item{display:flex;align-items:center;gap:.65rem;padding:.45em .6em;border-radius:8px;cursor:pointer;text-decoration:none;transition:all .15s;border:1px solid transparent}
+.sb-item:hover{background:var(--surface);border-color:var(--border)}
+.sb-item.active{background:var(--accent-dim);border-color:rgba(34,197,94,.25)}
+.sb-item.active .sb-num{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.sb-item.active .sb-title{color:var(--text-primary)}
+.sb-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:grid;place-items:center;font-size:.68rem;font-weight:700;color:var(--text-secondary);flex-shrink:0;transition:all .15s}
+.sb-title{font-size:.8rem;font-weight:600;color:var(--text-secondary);line-height:1.3;transition:color .15s}
+
 /* ── Vibe vs agentic section ── */
 .vibe-section{margin:3rem 0;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 .vibe-header{background:rgba(255,255,255,.03);padding:1.4rem 1.8rem;border-bottom:1px solid var(--border)}
@@ -108,7 +122,7 @@
     <p class="page-lead">Pick your role. We'll show you exactly which skills to use and how to trigger them — up and running in 5 minutes.</p>
   </div>
 
-  <!-- VIBE vs AGENTIC -->
+  <!-- VIBE vs AGENTIC (full width, above layout) -->
   <div class="vibe-section">
     <div class="vibe-header">
       <h2>Don't vibe code — use agentic coding</h2>
@@ -135,6 +149,15 @@
       </div>
     </div>
   </div>
+
+  <!-- SIDEBAR + CONTENT LAYOUT -->
+  <div class="guide-layout">
+
+  <!-- STICKY SIDEBAR (populated by JS) -->
+  <aside class="guide-sidebar" id="guideSidebar" aria-label="Step progress"></aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="guide-main">
 
   <!-- PERSONA SELECTOR -->
   <div class="persona-grid" role="tablist">
@@ -597,6 +620,9 @@ cp templates/SPRINT.md ./SPRINT.md
     </div>
   </div>
 
+  </div><!-- /guide-main -->
+  </div><!-- /guide-layout -->
+
 </div><!-- /container -->
 
 <!-- FOOTER -->
@@ -615,31 +641,109 @@ cp templates/SPRINT.md ./SPRINT.md
 </div><!-- /page -->
 
 <script>
+// ── Step definitions per persona ─────────────────────────
+const STEPS = {
+  dev: [
+    'Install once',
+    'Open Claude Code',
+    'Top 5 dev skills',
+    'Replace habits',
+    'Build a harness',
+    'Agent memory',
+    'Save to file',
+  ],
+  pm: [
+    'Install once',
+    'Top 5 PM skills',
+    'Replace habits',
+    'Define success first',
+    'Agent PM system',
+    'Save to file',
+  ],
+  user: [
+    'Browse & pick skills',
+    'Pick tool & install',
+    'Trigger naturally',
+    'Save to file',
+  ]
+};
+
+// ── Assign step IDs to .step-block elements ───────────────
+function assignStepIds() {
+  ['dev','pm','user'].forEach(persona => {
+    const panel = document.getElementById('panel-' + persona);
+    if (!panel) return;
+    panel.querySelectorAll('.step-block').forEach((block, i) => {
+      block.id = `step-${persona}-${i + 1}`;
+    });
+  });
+}
+
+// ── Build sidebar for active persona ─────────────────────
+function buildSidebar(persona) {
+  const sidebar = document.getElementById('guideSidebar');
+  const steps = STEPS[persona] || [];
+  const labels = {dev:'Developer', pm:'Project Manager', user:'Just a User'};
+
+  sidebar.innerHTML = `<div class="sb-label">${labels[persona] || ''}</div>` +
+    steps.map((title, i) =>
+      `<a class="sb-item" id="sb-${persona}-${i+1}" href="#step-${persona}-${i+1}" onclick="sbClick(event,'step-${persona}-${i+1}')">
+        <div class="sb-num">${i+1}</div>
+        <div class="sb-title">${title}</div>
+      </a>`
+    ).join('');
+}
+
+function sbClick(e, targetId) {
+  e.preventDefault();
+  const el = document.getElementById(targetId);
+  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── Scroll listener — highlight current step ─────────────
+let activePersona = null;
+function updateSidebarActive() {
+  if (!activePersona) return;
+  const steps = STEPS[activePersona] || [];
+  let current = 0;
+  const navH = 64 + 32; // nav height + buffer
+  steps.forEach((_, i) => {
+    const el = document.getElementById(`step-${activePersona}-${i+1}`);
+    if (el && el.getBoundingClientRect().top <= navH) current = i + 1;
+  });
+  document.querySelectorAll('.sb-item').forEach(item => item.classList.remove('active'));
+  const active = document.getElementById(`sb-${activePersona}-${current}`);
+  if (active) active.classList.add('active');
+}
+
+window.addEventListener('scroll', updateSidebarActive, {passive: true});
+
+// ── Persona selection ─────────────────────────────────────
 function selectPersona(id) {
-  // Buttons
   document.querySelectorAll('.persona-btn').forEach(b => {
     b.classList.remove('active');
     b.setAttribute('aria-selected','false');
   });
-  const btn = document.getElementById('btn-' + id);
-  btn.classList.add('active');
-  btn.setAttribute('aria-selected','true');
+  document.getElementById('btn-' + id).classList.add('active');
+  document.getElementById('btn-' + id).setAttribute('aria-selected','true');
 
-  // Panels
   document.querySelectorAll('.persona-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
 
-  // Scroll to panel
+  activePersona = id;
+  buildSidebar(id);
+
   setTimeout(() => {
     document.getElementById('panel-' + id).scrollIntoView({behavior:'smooth', block:'start'});
-  }, 80);
+    updateSidebarActive();
+  }, 100);
 
-  // Update hash
   history.replaceState(null, '', '#' + id);
 }
 
-// Auto-select from hash on load
+// ── Init ─────────────────────────────────────────────────
 window.addEventListener('load', () => {
+  assignStepIds();
   const hash = location.hash.replace('#','');
   if (['dev','pm','user'].includes(hash)) {
     selectPersona(hash);
