@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tool Integrations — AI-Powered Dev & PM Playbook</title>
-<meta name="description" content="Setup guides for Claude Code, Cursor, VS Code, Codex, GitHub Copilot, Windsurf, and Gemini CLI.">
+<meta name="description" content="Setup guides for Claude Code, Cursor, VS Code + Copilot, Codex, Windsurf, and Gemini CLI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -22,8 +22,8 @@
 .steps{display:flex;flex-direction:column;gap:.6rem;margin-top:.4rem}
 .step-row{display:flex;gap:.7rem;align-items:flex-start;font-size:.9rem;line-height:1.5}
 .step-dot{width:20px;height:20px;border-radius:50%;background:var(--accent-dim);border:1.5px solid rgba(34,197,94,.3);display:grid;place-items:center;font-size:.7rem;font-weight:700;color:var(--accent);flex-shrink:0;margin-top:.15rem}
-.cmp-table .cmp-row{grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr}
-@media(max-width:900px){.cmp-table{overflow-x:auto;display:block}.cmp-row{min-width:800px}}
+.cmp-table .cmp-row{grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1fr 1fr}
+@media(max-width:900px){.cmp-table{overflow-x:auto;display:block}.cmp-row{min-width:700px}}
 </style>
 </head>
 <body>
@@ -42,7 +42,7 @@
 <div class="page">
   <div class="container section">
     <div class="section-header">
-      <span class="eyebrow">7 tools</span>
+      <span class="eyebrow">6 tools</span>
       <h1 class="page-title">Works with your tools</h1>
       <p class="page-lead">The same <code style="font-size:.95em;background:rgba(255,255,255,.07);padding:.1em .4em;border-radius:5px">SKILL.md</code> file works across every major AI coding tool. Only the loading mechanism changes.</p>
     </div>
@@ -50,9 +50,8 @@
     <div class="tab-bar" id="tabBar">
       <button class="tab-btn active" data-tab="claude-code">🤖 Claude Code</button>
       <button class="tab-btn" data-tab="cursor">✦ Cursor</button>
-      <button class="tab-btn" data-tab="vscode">💙 VS Code</button>
+      <button class="tab-btn" data-tab="vscode">💙 VS Code + Copilot</button>
       <button class="tab-btn" data-tab="codex">◆ Codex</button>
-      <button class="tab-btn" data-tab="copilot">🐙 Copilot</button>
       <button class="tab-btn" data-tab="windsurf">🏄 Windsurf</button>
       <button class="tab-btn" data-tab="gemini">♊ Gemini CLI</button>
     </div>
@@ -164,7 +163,7 @@
       <div class="tool-header">
         <div class="tool-icon">💙</div>
         <div class="tool-header-text">
-          <h2>VS Code <span class="tool-badge">3 options</span></h2>
+          <h2>VS Code + Copilot <span class="tool-badge">3 options</span></h2>
           <p>Works with GitHub Copilot, Cline, and Continue. Each loads skills differently.</p>
         </div>
       </div>
@@ -258,43 +257,6 @@ to audit this endpoint"</span></div>
       <div class="note-box">Codex reads the full playbook file when referenced. The skill content — severity tables, output templates, worked examples — all transfer intact.</div>
     </div>
 
-    <!-- COPILOT -->
-    <div class="tab-panel" id="tab-copilot">
-      <div class="tool-header">
-        <div class="tool-icon">🐙</div>
-        <div class="tool-header-text">
-          <h2>GitHub Copilot <span class="tool-badge">Standalone</span></h2>
-          <p>Always-on via <code style="font-size:.9em">copilot-instructions.md</code> or on-demand with <code style="font-size:.9em">#file:</code>.</p>
-        </div>
-      </div>
-      <div class="tool-grid">
-        <div>
-          <div class="tool-section-title">Always-on (top 3–5 skills)</div>
-          <div class="code-block">
-            <div class="code-hd"><div class="dots"><s></s><s></s><s></s></div><span class="code-fname">.github/copilot-instructions.md</span></div>
-            <div class="code-body"><span class="c-comment"># Append your most-used skill</span>
-<span class="c-comment"># content here directly.</span>
-<span class="c-comment"># Keep total file under 400 lines.</span>
-
-./scripts/export-skills.sh <span class="c-accent">copilot</span></div>
-          </div>
-        </div>
-        <div>
-          <div class="tool-section-title">On-demand (full library)</div>
-          <div class="code-block">
-            <div class="code-hd"><div class="dots"><s></s><s></s><s></s></div><span class="code-fname">Copilot Chat</span></div>
-            <div class="code-body"><span class="c-comment"># Reference a specific skill</span>
-<span class="c-str">#file:.github/skills/code-review.md</span>
-Review this for OWASP issues
-
-<span class="c-comment"># Export individual skill files</span>
-./scripts/export-skills.sh <span class="c-accent">copilot-ondemand</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="note-box"><strong>Tip:</strong> Use always-on for your top 3–5 daily skills (code-review, debugging, commit-message). Use #file: on-demand for less frequent skills to keep copilot-instructions.md lean.</div>
-    </div>
-
     <!-- WINDSURF -->
     <div class="tab-panel" id="tab-windsurf">
       <div class="tool-header">
@@ -377,45 +339,44 @@ to audit this endpoint"</span></div>
         <h2 class="section-title">Tool comparison</h2>
       </div>
       <div class="cmp-table">
-        <div class="cmp-row cmp-head-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
+        <div class="cmp-row cmp-head-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr">
           <div>Feature</div>
           <div>Claude Code</div>
           <div>Cursor</div>
-          <div>VS Code</div>
+          <div>VS Code + Copilot</div>
           <div>Codex</div>
-          <div>Copilot</div>
           <div>Windsurf</div>
           <div>Gemini CLI</div>
         </div>
-        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
+        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr">
           <div>Auto-routing from natural language</div>
           <div class="col-yes col-win">✓</div><div class="col-no">—</div><div class="col-no">—</div>
-          <div class="col-no">—</div><div class="col-no">—</div><div class="col-no">—</div><div class="col-no">—</div>
+          <div class="col-no">—</div><div class="col-no">—</div><div class="col-no">—</div>
         </div>
-        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
+        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr">
           <div>All 24 dev-pm skills</div>
           <div class="col-yes col-win">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
-          <div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
+          <div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
         </div>
-        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
+        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr">
           <div>Agent PM (daily-checkin, team-digest)</div>
           <div class="col-yes col-win">✓</div><div class="col-no">—</div><div class="col-no">—</div>
-          <div class="col-no">—</div><div class="col-no">—</div><div class="col-no">—</div><div class="col-no">—</div>
+          <div class="col-no">—</div><div class="col-no">—</div><div class="col-no">—</div>
         </div>
-        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
+        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr">
           <div>Install script</div>
           <div class="col-yes col-win">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
-          <div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
+          <div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
         </div>
-        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
+        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr">
           <div>Extended skills (slides, career advisor…)</div>
           <div class="col-yes col-win">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
-          <div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
+          <div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
         </div>
-        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
+        <div class="cmp-row" style="grid-template-columns:1.8fr 1fr 1fr 1fr 1fr 1fr 1fr">
           <div>Setup guide</div>
           <div class="col-yes col-win">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
-          <div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
+          <div class="col-yes">✓</div><div class="col-yes">✓</div><div class="col-yes">✓</div>
         </div>
       </div>
     </div>

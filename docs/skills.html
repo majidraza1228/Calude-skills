@@ -148,8 +148,8 @@ const CATS = [
 
 const AUD = {dev:'<span class="badge badge-dev">Dev</span>', pm:'<span class="badge badge-pm">PM</span>', both:'<span class="badge badge-both">Dev + PM</span>'};
 const TOOL_LABELS = {
-  'claude-code':'Claude Code','cursor':'Cursor','vscode':'VS Code',
-  'codex':'Codex','copilot':'Copilot','windsurf':'Windsurf','gemini':'Gemini CLI'
+  'claude-code':'Claude Code','cursor':'Cursor','vscode':'VS Code + Copilot',
+  'codex':'Codex','windsurf':'Windsurf','gemini':'Gemini CLI'
 };
 
 const SKILLS = [
@@ -159,35 +159,35 @@ const SKILLS = [
    desc:'Break features into tasks with done criteria and dependencies',
    triggers:['plan this feature','break this down','task list','create sprint tasks'],
    example:{in:'Build a user authentication system with email + OAuth',out:'Phased task list with sizing, dependencies, and done criteria for each task'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'code-explain',cat:'dev-workflow',catLabel:'Dev Workflow',aud:'dev',
    name:'code-explain',
    desc:'Explain unfamiliar code, algorithms, or regex at the right depth',
    triggers:['explain this code','what does this do','how does this work','walk me through this'],
    example:{in:'What does this recursive memoization function do?',out:'Plain-English walkthrough with algorithm name, step-by-step trace, and time/space complexity'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'debugging',cat:'dev-workflow',catLabel:'Dev Workflow',aud:'dev',
    name:'debugging',
    desc:'5-step bug triage: reproduce → localize → reduce → fix → guard',
    triggers:['debug this','fix this bug','why is this failing','I have an error I can\'t figure out'],
    example:{in:'TypeError: Cannot read property \'map\' of undefined',out:'Root cause, minimal reproduction, fix, and a guard (test or assertion) to prevent recurrence'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'refactor',cat:'dev-workflow',catLabel:'Dev Workflow',aud:'dev',
    name:'refactor',
    desc:'Simplify code without changing behavior (Chesterton\'s Fence rule)',
    triggers:['refactor this','clean up this code','simplify this function','too much duplication'],
    example:{in:'80-line function with nested conditionals',out:'Refactored version with explanation of each change and why behavior is preserved'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'performance',cat:'dev-workflow',catLabel:'Dev Workflow',aud:'dev',
    name:'performance',
    desc:'Measure-first optimization: N+1 queries, caching, profiling',
    triggers:['optimize this','slow query','performance issue','N+1 problem','this page is slow'],
    example:{in:'Endpoint takes 4s — here\'s the query',out:'N+1 identified, rewritten query with JOIN, estimated speedup, profiling next steps'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   // CODE QUALITY
   {id:'code-review',cat:'code-quality',catLabel:'Code Quality',aud:'dev',
@@ -195,21 +195,21 @@ const SKILLS = [
    desc:'Structured review with severity table (CRITICAL / WARNING / NIT) and verdict',
    triggers:['review my code','code review','find bugs','anything wrong here','LGTM?'],
    example:{in:'auth.py: password stored as MD5',out:'| CRITICAL | auth.py:42 | MD5 broken — use bcrypt | Replace hashlib.md5 with bcrypt.hashpw |'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'security',cat:'code-quality',catLabel:'Code Quality',aud:'dev',
    name:'security',
    desc:'OWASP Top 10 security review — flags critical issues before merge',
    triggers:['security review','check for vulnerabilities','is this secure','OWASP check'],
    example:{in:'Login endpoint with SQL string interpolation',out:'SQL injection flagged CRITICAL, parameterized fix, OWASP A03 reference, test case'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'tdd',cat:'code-quality',catLabel:'Code Quality',aud:'dev',
    name:'tdd',
    desc:'Red-green-refactor TDD with test pyramid and worked examples',
    triggers:['write tests','TDD this','test this function','unit test','add test coverage'],
    example:{in:'Write tests for a user registration service',out:'Failing test first (red), minimal implementation (green), refactored with edge cases and mocks'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   // GIT & RELEASE
   {id:'commit-message',cat:'git-release',catLabel:'Git & Release',aud:'dev',
@@ -217,21 +217,21 @@ const SKILLS = [
    desc:'Conventional commit formatting with worked examples',
    triggers:['write a commit message','commit message for this','git commit','what should I write'],
    example:{in:'Added retry logic for payment timeouts, closes #234',out:'fix: Add retry logic for payment timeout errors\n\nAdd try/catch with exponential backoff. Closes #234'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'pr-description',cat:'git-release',catLabel:'Git & Release',aud:'dev',
    name:'pr-description',
    desc:'PR body with what/why, test steps, and reviewer notes',
    triggers:['write PR description','pull request body','PR summary','describe this PR'],
    example:{in:'Diff: adds caching layer to user profile endpoint',out:'What/Why sections, test steps checklist, reviewer notes about caching strategy'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'changelog',cat:'git-release',catLabel:'Git & Release',aud:'dev',
    name:'changelog',
    desc:'Keep a Changelog format from commit list or git log',
    triggers:['update changelog','changelog for this release','release notes','what changed in v2'],
    example:{in:'git log v1.2.0..HEAD',out:'## [1.3.0] - 2026-05-30\n### Added\n### Fixed\n### Changed'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   // DATA & APIS
   {id:'api-design',cat:'data-api',catLabel:'Data & APIs',aud:'dev',
@@ -239,21 +239,21 @@ const SKILLS = [
    desc:'Contract-first API design with breaking change assessment',
    triggers:['design an API','API spec','REST endpoint','is this a breaking change','OpenAPI'],
    example:{in:'CRUD API for a task management system',out:'Endpoint contracts, request/response schemas, breaking change checklist'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'sql',cat:'data-api',catLabel:'Data & APIs',aud:'dev',
    name:'sql',
    desc:'Write and optimize SQL queries safely (guards on DELETE/UPDATE)',
    triggers:['write SQL','SQL query','optimize this query','slow SQL','database query'],
    example:{in:'Find all users inactive for 90 days',out:'Safe SELECT with explanation, then optimized version with index hint and execution plan'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'database-schema',cat:'data-api',catLabel:'Data & APIs',aud:'dev',
    name:'database-schema',
    desc:'Schema design with migration + rollback scripts',
    triggers:['design a schema','database schema','migration script','table design','model this data'],
    example:{in:'Multi-tenant SaaS with users, teams, and permissions',out:'Schema diagram, migration SQL with rollback, indexes, foreign key constraints'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   // AGENT PM
   {id:'daily-checkin',cat:'agent-pm',catLabel:'Agent PM',aud:'both',
@@ -276,28 +276,28 @@ const SKILLS = [
    desc:'Break a feature into sprint tasks with sizing, priority, dependencies, and risks',
    triggers:['plan this sprint','break down this feature','sprint planning','size these tasks'],
    example:{in:'Feature: Stripe subscription billing',out:'Sprint tasks with S/M/L sizing, priority, dependencies, and risk flags'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'ticket-writer',cat:'pm-workflow',catLabel:'PM Workflow',aud:'both',
    name:'ticket-writer',
    desc:'Turn rough notes into a Jira/Linear/GitHub Issue with AC and technical notes',
    triggers:['write a ticket','create a Jira ticket','GitHub issue','turn this into a ticket'],
    example:{in:'Users can\'t reset password when 2FA is on',out:'Jira-ready ticket: summary, steps to reproduce, acceptance criteria, technical notes, labels'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'standup-writer',cat:'pm-workflow',catLabel:'PM Workflow',aud:'both',
    name:'standup-writer',
    desc:'Write standup updates from git log, task list, or rough notes',
    triggers:['write my standup','standup update','daily update','what should I report today'],
    example:{in:'Finished auth PR. Starting billing. Blocked on design spec.',out:'Formatted standup: done / doing / blockers — no filler'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'retro',cat:'pm-workflow',catLabel:'PM Workflow',aud:'both',
    name:'retro',
    desc:'Sprint retro or incident post-mortem — blameless, action-oriented, with owners',
    triggers:['run a retro','sprint retrospective','post-mortem','incident review','blameless retro'],
    example:{in:'Sprint 12 — missed velocity, auth incident on day 3',out:'What went well / delta / actions table with owners and due dates'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   // OBSERVABILITY
   {id:'logging',cat:'observability',catLabel:'Observability',aud:'dev',
@@ -305,14 +305,14 @@ const SKILLS = [
    desc:'Structured logging: what to log, what to redact, log levels',
    triggers:['add logging','structured logging','what should I log','redact PII','log levels'],
    example:{in:'Payment processing function',out:'Structured log calls with correct levels, redacted PII fields, correlation IDs'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'doc-generator',cat:'observability',catLabel:'Observability',aud:'dev',
    name:'doc-generator',
    desc:'Generate documentation from code — functions, classes, APIs',
    triggers:['document this','write docs','generate documentation','add docstrings','JSDoc'],
    example:{in:'Python class with 6 methods, no docstrings',out:'Docstrings for class and each method with params, returns, raises, examples'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   // AI SPECIALISMS
   {id:'harness-engineering',cat:'ai-specialisms',catLabel:'AI Specialisms',aud:'dev',
@@ -327,7 +327,7 @@ const SKILLS = [
    desc:'FDE career roadmap (Palantir/Anduril/Scale AI) and day-to-day FDE practice frameworks',
    triggers:['forward deployed engineer','FDE role','how do I become an FDE','technical discovery','enterprise deployment'],
    example:{in:'Backend engineer wanting to move into FDE at Palantir',out:'3-phase roadmap, skills table, interview prep (coding + customer sim + deployment challenge)'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   // EXTENDED
   {id:'strategy-writer',cat:'extended',catLabel:'Extended — Product',aud:'pm',
@@ -335,21 +335,21 @@ const SKILLS = [
    desc:'Shape a one-page product strategy: problem, vision, principles, strategy, milestones',
    triggers:['write a strategy','product strategy','one-page strategy','strategy doc'],
    example:{in:'B2B analytics tool for operations teams',out:'One-page strategy: framing, vision, 3 principles, strategy statement, 6-month milestones'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'spec-writer',cat:'extended',catLabel:'Extended — Product',aud:'pm',
    name:'spec-writer',
    desc:'Turn rough notes into a build-ready PRD using a structured template',
    triggers:['write a spec','PRD','product requirements','turn these notes into a spec'],
    example:{in:'Users need CSV export, requested by 3 enterprise customers',out:'Full PRD: problem, goals, non-goals, requirements, UX notes, out of scope, open questions'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'exec-reviewer',cat:'extended',catLabel:'Extended — Product',aud:'pm',
    name:'exec-reviewer',
    desc:'Stress-test a plan or doc the way a sharp exec would',
    triggers:['review this plan','exec review','what would a VP say','poke holes in this'],
    example:{in:'6-month roadmap for payment infrastructure rewrite',out:'3 risks, 2 unanswered questions, 1 assumption that needs validation'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'infographic-designer',cat:'extended',catLabel:'Extended — Writing',aud:'pm',
    name:'infographic-designer',
@@ -370,7 +370,7 @@ const SKILLS = [
    desc:'Personalised roadmap with YouTube, articles, books, and projects for your career goal',
    triggers:['what should I learn','career advice','learning roadmap','how do I become an FDE','harness engineering career'],
    example:{in:'Frontend dev, 2yr experience, want FDE at Palantir',out:'3-phase roadmap with specific YouTube channels, books, projects, and weekly routine'},
-   tools:['claude-code','cursor','vscode','codex','copilot','windsurf','gemini']},
+   tools:['claude-code','cursor','vscode','codex','windsurf','gemini']},
 
   {id:'weekend-planner',cat:'extended',catLabel:'Extended — Personal',aud:'both',
    name:'weekend-planner',
