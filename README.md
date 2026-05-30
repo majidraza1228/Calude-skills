@@ -93,6 +93,13 @@ No PM needed. Developers check into a shared `TEAM.md`. Agents handle the rest.
 | [standup-writer](dev-pm-skills/standup-writer/SKILL.md) | Write daily or weekly standup updates from git log, task list, or rough notes |
 | [retro](dev-pm-skills/retro/SKILL.md) | Run a sprint retro or incident post-mortem — blameless, action-oriented, with owners and due dates |
 
+### AI & Engineering Specialisms
+
+| Skill | What It Does |
+|-------|-------------|
+| [harness-engineering](dev-pm-skills/harness-engineering/SKILL.md) | Build AI eval harnesses (prompt regression tests, golden datasets, CI integration) and set up Harness.io CI/CD pipelines |
+| [forward-deployed-engineering](dev-pm-skills/forward-deployed-engineering/SKILL.md) | FDE career roadmap (Palantir/Anduril/Scale AI) and day-to-day practice (technical discovery, rapid deployment, stakeholder comms) |
+
 ### Observability
 
 | Skill | What It Does |
@@ -125,7 +132,7 @@ The same `SKILL.md` files work across every major AI coding tool. The skill cont
 ### Quick install
 
 ```bash
-# Claude Code — install all 22 skills globally
+# Claude Code — install all 24 skills globally
 ./scripts/install-skills.sh --global
 
 # Export for any other tool
@@ -153,7 +160,7 @@ Calude-skills/
 │   ├── codex-setup.md       ← OpenAI Codex
 │   ├── windsurf-setup.md    ← Windsurf
 │   └── gemini-cli-setup.md  ← Gemini CLI
-├── dev-pm-skills/                   ← Developer & PM skills (22 skills)
+├── dev-pm-skills/                   ← Developer & PM skills (24 skills)
 │   ├── code-review/SKILL.md
 │   ├── commit-message/SKILL.md
 │   ├── daily-checkin/               ← Agent PM skills

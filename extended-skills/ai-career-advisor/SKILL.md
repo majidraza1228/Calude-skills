@@ -3,9 +3,11 @@ name: ai-career-advisor
 description: >
   AI-powered career advisor that builds a personalised learning roadmap and curates
   resources — courses, YouTube channels, articles, books, and projects — based on
-  where you are now and where you want to go. Triggers on 'what should I learn',
-  'career advice', 'learning roadmap', 'what to watch', 'how do I become a',
-  'skill gap', 'next steps in my career', or 'recommend resources'.
+  where you are now and where you want to go. Has deep knowledge of harness engineering
+  (AI eval frameworks, Harness.io platform) and forward deployed engineering (FDE) career
+  paths at companies like Palantir, Anduril, Scale AI, and Harness.io. Triggers on
+  'what should I learn', 'career advice', 'learning roadmap', 'how do I become an FDE',
+  'harness engineering career', 'forward deployed engineer', 'skill gap', or 'recommend resources'.
 version: "1.0"
 updated: "2026-05-30"
 ---
