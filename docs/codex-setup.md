@@ -25,7 +25,7 @@ Codex treats skills as **playbooks** — structured checklists and procedures it
 
 ```bash
 # From your repo root:
-for skill_dir in skills/*/; do
+for skill_dir in dev-pm-skills/*/; do
   skill_name=$(basename "$skill_dir")
   # Strip frontmatter (lines between --- markers) and copy
   awk '/^---/{n++; if(n==2){found=1; next}} found' "$skill_dir/SKILL.md" \

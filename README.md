@@ -106,49 +106,34 @@ No PM needed. Developers check into a shared `TEAM.md`. Agents handle the rest.
 |-------|-------------|
 | [fitness-coach](dev-pm-skills/fitness-coach/) | Pattern 7 example: 4 focused sub-skills (exercise, nutrition, recovery, safety) under 200 lines each |
 
-## Installing Skills for Claude Code
+## Works With
 
-Claude Code looks for skills in two places:
+The same `SKILL.md` files work across every major AI coding tool. The skill content (output templates, safety rules, worked examples) is plain Markdown — only the loading mechanism differs per tool.
 
-| Scope | Path | When to use |
-|-------|------|-------------|
-| Global (all projects) | `~/.claude/skills/<skill-name>/SKILL.md` | Skills you use everywhere |
-| Project-local | `.claude/skills/<skill-name>/SKILL.md` | Skills specific to one repo |
+| Tool | How skills load | Invoke | Setup guide |
+|------|----------------|--------|-------------|
+| **Claude Code** | Native — auto-routes from natural language | `"review my code"` or `/code-review` | [claude-code-setup.md](docs/claude-code-setup.md) |
+| **Cursor** | `.cursor/rules/*.mdc` — `@mention` in chat | `@code-review` | [cursor-setup.md](docs/cursor-setup.md) |
+| **VS Code** (Copilot, Cline, Continue) | `#file:` reference or always-on instructions | `#file:.github/skills/name.md` | [vscode-setup.md](docs/vscode-setup.md) |
+| **OpenAI Codex** | `.codex/playbooks/` — reference in task | Mention in task description | [codex-setup.md](docs/codex-setup.md) |
+| **GitHub Copilot** (standalone) | `.github/copilot-instructions.md` or `#file:` | `#file:.github/skills/name.md` | [copilot-setup.md](docs/copilot-setup.md) |
+| **Windsurf** | `.windsurf/rules/` — Cascade rules | Prompt to follow procedure | [windsurf-setup.md](docs/windsurf-setup.md) |
+| **Gemini CLI** | `.gemini/skills/` | `/skill-name` | [gemini-cli-setup.md](docs/gemini-cli-setup.md) |
 
-Use the install script to symlink skills from this repo — changes to source propagate automatically:
+> **Claude Code gets the most.** Auto-routing, agent PM (`/daily-checkin`, `/team-digest`), and the install script all require Claude Code. Every other tool gets the skill content but loads it manually.
+
+### Quick install
 
 ```bash
-# Install all skills globally (available in every Claude Code session)
+# Claude Code — install all 22 skills globally
 ./scripts/install-skills.sh --global
 
-# Install all skills for the current project only
-./scripts/install-skills.sh --project
-
-# Install specific skills globally
-./scripts/install-skills.sh --global code-review debugging
-
-# Check what's installed vs. available
-./scripts/install-skills.sh --status
+# Export for any other tool
+./scripts/export-skills.sh all        # all tools
+./scripts/export-skills.sh cursor     # Cursor only
+./scripts/export-skills.sh copilot    # GitHub Copilot / VS Code
+./scripts/export-skills.sh codex      # OpenAI Codex
 ```
-
-Invoke skills by name in any Claude Code session: `"run a code review"` or `/code-review`.
-
-## Multi-Tool Support
-
-Skills are plain Markdown — the same SKILL.md works across all tools. Run the export script to generate tool-specific formats:
-
-```bash
-./scripts/export-skills.sh all
-```
-
-| Tool | Exported to | How to invoke | Setup guide |
-|------|-------------|---------------|-------------|
-| Claude Code | `~/.claude/skills/` or `.claude/skills/` | Natural language or `/skill-name` | See above |
-| Gemini CLI | `.gemini/skills/` | `/skill-name` | [gemini-cli-setup.md](docs/gemini-cli-setup.md) |
-| Cursor | `.cursor/rules/*.mdc` | `@skill-name` in chat | [cursor-setup.md](docs/cursor-setup.md) |
-| GitHub Copilot | `.github/skills/` | `#file:.github/skills/name.md` | [copilot-setup.md](docs/copilot-setup.md) |
-| OpenAI Codex | `.codex/playbooks/` | Reference in task description | [codex-setup.md](docs/codex-setup.md) |
-| Windsurf | `.windsurf/rules/` | Prompt Cascade to follow procedure | [windsurf-setup.md](docs/windsurf-setup.md) |
 
 ## Repo Structure
 
@@ -161,11 +146,13 @@ Calude-skills/
 │   ├── checklist.md                 ← One-page audit checklist
 │   ├── when-to-use-skills.md        ← Skill vs agent decision framework
 │   ├── agentic-patterns.md          ← 7 agentic workflow patterns
-│   ├── copilot-setup.md
-│   ├── codex-setup.md
-│   ├── cursor-setup.md
-│   ├── windsurf-setup.md
-│   └── gemini-cli-setup.md
+│   ├── claude-code-setup.md ← Claude Code (CLI + desktop)
+│   ├── vscode-setup.md      ← VS Code (Copilot, Cline, Continue)
+│   ├── cursor-setup.md      ← Cursor
+│   ├── copilot-setup.md     ← GitHub Copilot (standalone)
+│   ├── codex-setup.md       ← OpenAI Codex
+│   ├── windsurf-setup.md    ← Windsurf
+│   └── gemini-cli-setup.md  ← Gemini CLI
 ├── dev-pm-skills/                   ← Developer & PM skills (edit these)
 │   ├── code-review/SKILL.md
 │   ├── commit-message/SKILL.md
