@@ -133,6 +133,7 @@
       <a class="as-item" href="#subagents-intro" onclick="return sbScroll(event,this)"><div class="as-dot"></div><div class="as-label">What are sub-agents</div></a>
       <a class="as-item" href="#subagents-patterns" onclick="return sbScroll(event,this)"><div class="as-dot"></div><div class="as-label">Orchestrator pattern</div></a>
       <a class="as-item" href="#subagents-claude-code" onclick="return sbScroll(event,this)"><div class="as-dot"></div><div class="as-label">Claude Code workflows</div></a>
+      <a class="as-item" href="#subagents-examples" onclick="return sbScroll(event,this)"><div class="as-dot"></div><div class="as-label">Real examples</div></a>
       <div class="as-section-label">MCP</div>
       <a class="as-item" href="#mcp-intro" onclick="return sbScroll(event,this)"><div class="as-dot"></div><div class="as-label">What is MCP</div></a>
       <a class="as-item" href="#mcp-configure" onclick="return sbScroll(event,this)"><div class="as-dot"></div><div class="as-label">Configure MCP servers</div></a>
@@ -978,6 +979,136 @@ asyncio.run(run_pr_workflow(open(<span class="c-str">"pr.diff"</span>).read()))<
           <div class="apply-body">
             <h4>Apply it — start with a two-agent workflow</h4>
             <p>Don't start with five sub-agents. Start with one orchestrator and one worker: <code>"Use a sub-agent to run /code-review on this PR diff. Then summarise the findings for me."</code> Once that works reliably, add a second worker. Complexity compounds — add agents one at a time and test each addition.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="ag-divider">
+
+      <!-- ── SUB-AGENT EXAMPLES ── -->
+      <div class="ag-section" id="subagents-examples">
+        <span class="ag-eyebrow">Sub-agents</span>
+        <h2 class="ag-title">Real examples with skills</h2>
+        <p class="ag-lead">Each example below shows a concrete sub-agent workflow and which playbook skills power each worker. The skill is what makes a worker a specialist — without a SKILL.md as the system prompt, every sub-agent behaves the same.</p>
+
+        <!-- Example 1: PR review -->
+        <h3 style="font-size:1rem;font-weight:700;margin-bottom:.5rem">1 — PR review pipeline</h3>
+        <p style="font-size:.88rem;color:var(--text-secondary);line-height:1.6;margin-bottom:.8rem">Orchestrator receives a PR diff. Three sub-agents run in parallel — each loaded with a different skill. Results merge into a single prioritised comment posted back to GitHub.</p>
+        <div class="code-block">
+          <div class="code-hd"><div class="dots"><s></s><s></s><s></s></div><span class="code-fname">pr_review_pipeline.py</span></div>
+          <div class="code-body">tasks = {
+    <span class="c-comment"># skill             → sub-agent focus</span>
+    <span class="c-str">"code-review"</span>:  f<span class="c-str">"Security + correctness audit:\n{pr_diff}"</span>,
+    <span class="c-str">"tdd"</span>:           f<span class="c-str">"List missing or weak tests:\n{pr_diff}"</span>,
+    <span class="c-str">"doc-writer"</span>:    f<span class="c-str">"Flag undocumented public API changes:\n{pr_diff}"</span>,
+}
+<span class="c-comment"># All three run simultaneously — wall-clock time = slowest worker, not sum</span>
+results = run_parallel_subagents(tasks)   <span class="c-comment"># from orchestrator.py above</span>
+
+<span class="c-comment"># Claude Code natural language equivalent:</span>
+<span class="c-comment"># "Use three sub-agents on this diff: /code-review for security,</span>
+<span class="c-comment">#  /tdd for test gaps, /doc-writer for API changes. Merge results."</span></div>
+        </div>
+
+        <!-- Example 2: Sprint planning -->
+        <h3 style="font-size:1rem;font-weight:700;margin:1.4rem 0 .5rem">2 — Sprint planning from backlog</h3>
+        <p style="font-size:.88rem;color:var(--text-secondary);line-height:1.6;margin-bottom:.8rem">PM orchestrator reads the backlog, spawns three workers to draft tickets, estimate effort, and flag technical dependencies — then assembles the sprint doc.</p>
+        <div class="code-block">
+          <div class="code-hd"><div class="dots"><s></s><s></s><s></s></div><span class="code-fname">sprint_planning_agent.py</span></div>
+          <div class="code-body">backlog = load_file(<span class="c-str">"product-os/backlog.md"</span>)
+
+tasks = {
+    <span class="c-str">"ticket-writer"</span>:      f<span class="c-str">"Write JIRA-ready tickets for these backlog items:\n{backlog}"</span>,
+    <span class="c-str">"planning"</span>:           f<span class="c-str">"Estimate effort (S/M/L) for each item:\n{backlog}"</span>,
+    <span class="c-str">"technical-design"</span>:   f<span class="c-str">"Flag blockers and cross-team dependencies:\n{backlog}"</span>,
+}
+results = run_parallel_subagents(tasks)
+
+<span class="c-comment"># Orchestrator assembles the sprint</span>
+sprint_doc = merge_into_sprint(results)  <span class="c-comment"># call Claude once to combine</span>
+save_file(<span class="c-str">"product-os/sprints/current.md"</span>, sprint_doc)
+
+<span class="c-comment"># Claude Code equivalent:</span>
+<span class="c-comment"># "Read backlog.md. Use sub-agents: /ticket-writer for descriptions,</span>
+<span class="c-comment">#  /planning for estimates, /technical-design for dependencies.</span>
+<span class="c-comment">#  Write the result to sprints/current.md."</span></div>
+        </div>
+
+        <!-- Example 3: Codebase onboarding -->
+        <h3 style="font-size:1rem;font-weight:700;margin:1.4rem 0 .5rem">3 — Codebase onboarding scan</h3>
+        <p style="font-size:.88rem;color:var(--text-secondary);line-height:1.6;margin-bottom:.8rem">A single agent can't read an entire large codebase without hitting the context window. Sub-agents read modules in parallel; the orchestrator assembles a full architecture summary.</p>
+        <div class="code-block">
+          <div class="code-hd"><div class="dots"><s></s><s></s><s></s></div><span class="code-fname">codebase_scan.py</span></div>
+          <div class="code-body">import os, pathlib
+
+<span class="c-comment"># Each top-level module becomes one sub-agent task</span>
+modules = [p for p in pathlib.Path(<span class="c-str">"src"</span>).iterdir() if p.is_dir()]
+
+tasks = {
+    mod.name: (
+        <span class="c-str">"code-review"</span>,  <span class="c-comment"># skill: structured analysis output</span>
+        f<span class="c-str">"Summarise this module — purpose, public API, key dependencies:\n"</span>
+        + read_module_files(mod)
+    )
+    for mod in modules
+}
+
+summaries = run_parallel_subagents(tasks)
+
+<span class="c-comment"># Orchestrator writes CLAUDE.md with architecture overview</span>
+arch_summary = merge_summaries(summaries)
+save_file(<span class="c-str">"CLAUDE.md"</span>, arch_summary)
+
+<span class="c-comment"># Claude Code equivalent (for a new repo you just cloned):</span>
+<span class="c-comment"># "Explore the src/ directory. Use a sub-agent per top-level module</span>
+<span class="c-comment">#  to summarise each one, then write an architecture overview to CLAUDE.md."</span></div>
+        </div>
+
+        <!-- Example 4: Nightly quality scan -->
+        <h3 style="font-size:1rem;font-weight:700;margin:1.4rem 0 .5rem">4 — Nightly CI quality scan</h3>
+        <p style="font-size:.88rem;color:var(--text-secondary);line-height:1.6;margin-bottom:.8rem">Scheduled CI job spawns one sub-agent per changed file. Each runs the harness skill. If any returns a critical issue, the build fails with a specific report.</p>
+        <div class="code-block">
+          <div class="code-hd"><div class="dots"><s></s><s></s><s></s></div><span class="code-fname">.github/workflows/nightly-quality.yml + nightly_scan.py</span></div>
+          <div class="code-body"><span class="c-comment"># nightly_scan.py — one sub-agent per changed file</span>
+changed_files = get_changed_files_since_yesterday()
+
+tasks = {
+    f.name: (<span class="c-str">"harness-engineering"</span>, f<span class="c-str">"Run quality checks on:\n{f.read_text()}"</span>)
+    for f in changed_files if f.suffix == <span class="c-str">".py"</span>
+}
+
+results = run_parallel_subagents(tasks)
+
+<span class="c-comment"># Fail CI if any sub-agent returns CRITICAL</span>
+failures = {name: out for name, out in results.items() if <span class="c-str">"CRITICAL"</span> in out}
+if failures:
+    print(<span class="c-str">"Quality gate failed:"</span>, failures)
+    raise SystemExit(<span class="c-accent">1</span>)</div>
+        </div>
+
+        <!-- Skills reference table -->
+        <h3 style="font-size:1rem;font-weight:700;margin:1.4rem 0 .7rem">Which skill for which sub-agent</h3>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="trigger-table" style="font-size:.85rem">
+            <thead><tr><th>Sub-agent job</th><th>Load this skill</th><th>What it produces</th></tr></thead>
+            <tbody>
+              <tr><td>Security / correctness review</td><td><code>/code-review</code></td><td>Severity-ranked findings with line refs</td></tr>
+              <tr><td>Find missing tests</td><td><code>/tdd</code></td><td>Test cases to write with assertions</td></tr>
+              <tr><td>Write tickets from requirements</td><td><code>/ticket-writer</code></td><td>Structured JIRA/Linear-ready tickets</td></tr>
+              <tr><td>Break a goal into steps</td><td><code>/planning</code></td><td>Ordered task list with dependencies</td></tr>
+              <tr><td>Document code / APIs</td><td><code>/doc-writer</code></td><td>Docstrings, README sections, changelogs</td></tr>
+              <tr><td>Design system or feature</td><td><code>/technical-design</code></td><td>Architecture doc with tradeoffs</td></tr>
+              <tr><td>Evaluate skill quality</td><td><code>/harness-engineering</code></td><td>Pass/fail report with regression details</td></tr>
+              <tr><td>Debug a failing test</td><td><code>/debug</code></td><td>Root cause + minimal fix</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="apply-box">
+          <div class="apply-icon">🚀</div>
+          <div class="apply-body">
+            <h4>Start with Example 1</h4>
+            <p>The PR review pipeline is the fastest way to see sub-agents work. In Claude Code: open a PR diff, then say <code>"Run three sub-agents on this diff: /code-review, /tdd, /doc-writer. Show me each result then merge them."</code> No Python code needed — Claude Code handles the delegation.</p>
           </div>
         </div>
       </div>
