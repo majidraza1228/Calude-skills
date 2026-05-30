@@ -8,6 +8,33 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+/* ── Source modal ── */
+.src-modal-bg{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .22s}
+.src-modal-bg.open{opacity:1;pointer-events:all}
+.src-modal{background:#0a0a0a;border:1px solid rgba(255,255,255,.18);border-radius:20px;max-width:760px;width:100%;max-height:90vh;display:flex;flex-direction:column;transform:translateY(20px) scale(.97);transition:transform .28s cubic-bezier(.16,1,.3,1)}
+.src-modal-bg.open .src-modal{transform:none}
+.src-modal-hd{display:flex;align-items:center;gap:.75rem;padding:1.1rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0}
+.src-modal-dots{display:flex;gap:6px}
+.src-modal-dots s{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.15);display:block}
+.src-modal-dots s:first-child{background:var(--accent)}
+.src-modal-fname{font-size:.82rem;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:.03em;flex:1;font-family:'Menlo','Monaco',monospace}
+.src-copy-btn{display:flex;align-items:center;gap:.4rem;padding:.35em .85em;border-radius:7px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);font-family:var(--font);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s;flex-shrink:0}
+.src-copy-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(224,107,74,.08)}
+.src-copy-btn.copied{border-color:rgba(100,220,150,.5);color:rgba(130,240,170,.9);background:rgba(100,220,150,.08)}
+.src-close-btn{width:28px;height:28px;border-radius:7px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.45);font-size:.95rem;cursor:pointer;display:grid;place-items:center;transition:all .15s;flex-shrink:0}
+.src-close-btn:hover{border-color:rgba(255,255,255,.3);color:#fff}
+.src-modal-body{overflow-y:auto;flex:1;min-height:0}
+.src-pre{margin:0;padding:1.4rem;font-family:'Menlo','Monaco','Courier New',monospace;font-size:.82rem;line-height:1.75;color:rgba(255,255,255,.82);white-space:pre-wrap;word-break:break-word;tab-size:2}
+.src-modal-ft{padding:.9rem 1.4rem;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:flex-end;flex-shrink:0}
+.src-gh-link{font-size:.85rem;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
+.src-gh-link:hover{color:var(--accent)}
+
+/* ── Skill modal action row ── */
+.modal-actions{display:flex;align-items:center;gap:.75rem;margin-top:1.4rem;flex-wrap:wrap}
+.btn-view-source{display:inline-flex;align-items:center;gap:.4rem;padding:.5em 1.1em;border-radius:8px;border:1px solid var(--accent);background:rgba(224,107,74,.1);color:var(--accent);font-family:var(--font);font-size:.88rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-view-source:hover{background:rgba(224,107,74,.2)}
+</style>
 </head>
 <body>
 
@@ -46,7 +73,7 @@
   </footer>
 </div>
 
-<!-- MODAL -->
+<!-- SKILL DETAIL MODAL -->
 <div class="modal-bg" id="modalBg" role="dialog" aria-modal="true">
   <div class="modal" id="modal">
     <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
@@ -54,6 +81,30 @@
   </div>
 </div>
 
+<!-- SOURCE CODE MODAL -->
+<div class="src-modal-bg" id="srcModalBg" role="dialog" aria-modal="true" aria-label="Skill source code">
+  <div class="src-modal">
+    <div class="src-modal-hd">
+      <div class="src-modal-dots"><s></s><s></s><s></s></div>
+      <span class="src-modal-fname" id="srcFname"></span>
+      <button class="src-copy-btn" id="srcCopyBtn" onclick="copySource()">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="5" width="9" height="9" rx="2"/><path d="M3 11V3a2 2 0 0 1 2-2h8"/>
+        </svg>
+        Copy
+      </button>
+      <button class="src-close-btn" id="srcClose" aria-label="Close source">✕</button>
+    </div>
+    <div class="src-modal-body">
+      <pre class="src-pre" id="srcPre"></pre>
+    </div>
+    <div class="src-modal-ft">
+      <a id="srcGhLink" href="#" class="src-gh-link" target="_blank" rel="noopener">Open on GitHub ↗</a>
+    </div>
+  </div>
+</div>
+
+<script src="skills-data.js"></script>
 <script>
 const CATS = [
   {id:'all',       label:'All'},
@@ -386,8 +437,16 @@ function openModal(skill) {
       <div class="modal-section-title">Works with</div>
       <div class="tool-chips">${toolChips}</div>
     </div>
-    <a href="https://github.com/majidraza1228/claude-skills/tree/main/${ghPath}/SKILL.md"
-       class="modal-gh-link" target="_blank" rel="noopener">View source on GitHub →</a>`;
+    <div class="modal-actions">
+      <button class="btn-view-source" onclick="openSource('${skill.id}','${ghPath}')">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="5" width="9" height="9" rx="2"/><path d="M3 11V3a2 2 0 0 1 2-2h8"/>
+        </svg>
+        View source
+      </button>
+      <a href="https://github.com/majidraza1228/claude-skills/tree/main/${ghPath}/SKILL.md"
+         class="modal-gh-link" target="_blank" rel="noopener">Open on GitHub ↗</a>
+    </div>`;
   modalBg.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -406,9 +465,53 @@ grid.addEventListener('click', e => {
 
 document.getElementById('modalClose').addEventListener('click', closeModal);
 modalBg.addEventListener('click', e => { if (e.target === modalBg) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// ── Fade-up on scroll ─────────────────────────────────────────
+// ── Source modal ──────────────────────────────────────────────
+const srcModalBg = document.getElementById('srcModalBg');
+const srcPre = document.getElementById('srcPre');
+const srcFname = document.getElementById('srcFname');
+const srcGhLink = document.getElementById('srcGhLink');
+
+function openSource(id, ghPath) {
+  const content = (typeof SKILL_SOURCE !== 'undefined' && SKILL_SOURCE[id])
+    ? SKILL_SOURCE[id]
+    : '# Source not available\n\nOpen on GitHub to view the full SKILL.md file.';
+  srcPre.textContent = content;
+  srcFname.textContent = ghPath + '/SKILL.md';
+  srcGhLink.href = `https://github.com/majidraza1228/claude-skills/tree/main/${ghPath}/SKILL.md`;
+  srcModalBg.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSource() {
+  srcModalBg.classList.remove('open');
+  document.body.style.overflow = '';
+  const btn = document.getElementById('srcCopyBtn');
+  btn.textContent = '';
+  btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M3 11V3a2 2 0 0 1 2-2h8"/></svg> Copy';
+  btn.classList.remove('copied');
+}
+
+async function copySource() {
+  const btn = document.getElementById('srcCopyBtn');
+  try {
+    await navigator.clipboard.writeText(srcPre.textContent);
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 8 6 12 14 4"/></svg> Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M3 11V3a2 2 0 0 1 2-2h8"/></svg> Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  } catch {
+    btn.textContent = 'Copy failed';
+  }
+}
+
+document.getElementById('srcClose').addEventListener('click', closeSource);
+srcModalBg.addEventListener('click', e => { if (e.target === srcModalBg) closeSource(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (srcModalBg.classList.contains('open')) closeSource(); else closeModal(); } });
+
+// ── Fade-up on scroll ──────────────────────────────────────────
 const fadeObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); fadeObs.unobserve(e.target); } });
 }, { threshold: .08 });
