@@ -9,6 +9,8 @@ description: >
   dependencies', or 'how do I implement this without breaking things'. Do NOT
   use for writing code — plan first, then implement. Do NOT use for debugging
   — use /skills/debugging instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Planning Skill

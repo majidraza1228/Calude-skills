@@ -8,6 +8,8 @@ description: >
   Also triggers on 'reproduce this bug', 'find the root cause', or 'why does
   this return the wrong value'. Do NOT use for general code review — use
   /skills/code-review instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Debugging Skill

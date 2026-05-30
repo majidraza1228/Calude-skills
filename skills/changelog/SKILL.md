@@ -10,6 +10,8 @@ description: >
   notes', or 'what broke in this release'. Do NOT use for commit messages —
   use /skills/commit-message instead. Do NOT use for PR descriptions — use
   /skills/pr-description instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Changelog Skill

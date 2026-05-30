@@ -9,6 +9,8 @@ description: >
   Also triggers on 'write a merge request', 'PR template', or 'what changed in
   this branch'. Do NOT use for commit messages — use /skills/commit-message
   instead. Do NOT use for changelogs — use /skills/changelog instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # PR Description Skill

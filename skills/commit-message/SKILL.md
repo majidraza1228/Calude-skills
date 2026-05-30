@@ -9,6 +9,8 @@ description: >
   concise commits. Do NOT use for generating changelogs — use
   /skills/changelog instead. Do NOT use for PR descriptions — use
   /skills/pr-description instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Commit Message Skill

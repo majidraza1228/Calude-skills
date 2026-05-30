@@ -9,6 +9,8 @@ description: >
   ID', 'log format', 'centralized logging', or 'when should I use error vs
   warn'. Do NOT use for fixing bugs found via logs — use /skills/debugging
   instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Logging Skill

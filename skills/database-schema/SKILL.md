@@ -8,6 +8,8 @@ description: >
   'add a table', or 'schema change'. Also triggers on 'one-to-many', 'many-to-many',
   'junction table', 'index strategy', or 'schema for this feature'. Do NOT
   use for writing queries against an existing schema — use /skills/sql instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Database Schema Skill

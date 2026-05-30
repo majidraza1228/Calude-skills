@@ -7,6 +7,8 @@ description: >
   uploads, SQL queries, or API keys. Also triggers on 'hardening', 'secrets
   management', 'injection', 'XSS', 'CSRF', 'auth bypass', or 'rate limiting'.
   Do NOT use for general code quality review — use /skills/code-review instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Security Review Skill

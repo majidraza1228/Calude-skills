@@ -9,6 +9,8 @@ description: >
   this return', or 'summarize this file'. Do NOT use for reviewing code quality
   — use /skills/code-review instead. Do NOT use for fixing bugs — use
   /skills/debugging instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Code Explain Skill

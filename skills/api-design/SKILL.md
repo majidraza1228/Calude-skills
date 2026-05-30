@@ -8,6 +8,8 @@ description: >
   change'. Also triggers on 'should I add a parameter', 'versioning strategy',
   or 'backwards compatibility'. Do NOT use for implementing internal logic
   behind an API — use /skills/code-review instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # API Design Skill

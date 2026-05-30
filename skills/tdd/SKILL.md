@@ -8,6 +8,8 @@ description: >
   'test first', 'test pyramid', or 'write failing tests before code'. Do NOT
   use for reviewing existing tests — use /skills/code-review instead. Do NOT
   use for debugging failing tests — diagnose the root cause first.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Test-Driven Development Skill

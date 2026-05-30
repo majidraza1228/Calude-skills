@@ -8,6 +8,8 @@ description: >
   query', 'write a migration', or 'schema change'. Also triggers on 'PostgreSQL',
   'MySQL', 'SQLite', 'aggregate query', 'subquery', or 'CTE'. Do NOT use for
   ORM-specific query builders — describe the ORM and ask separately.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # SQL Skill

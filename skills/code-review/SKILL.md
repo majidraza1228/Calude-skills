@@ -9,6 +9,8 @@ description: >
   'code quality check'. Do NOT use for writing new code from scratch — use
   /skills/code-generator instead. Do NOT use for explaining code — use
   /skills/code-explainer instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Code Review Skill

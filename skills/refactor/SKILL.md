@@ -9,6 +9,8 @@ description: >
   'split this class', or 'this function is too long'. Do NOT use for adding new
   features — use /skills/code-review to check first. Do NOT use if tests do not
   exist — write tests before refactoring.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Refactor Skill

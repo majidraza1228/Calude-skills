@@ -9,6 +9,8 @@ description: >
   Go, Rust, and Java. Do NOT use for code review or finding bugs — use
   /skills/code-review instead. Do NOT use for writing tutorials or guides — use
   /skills/tutorial-writer instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Documentation Generator Skill

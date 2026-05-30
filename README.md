@@ -69,6 +69,30 @@ cp skills/code-review/SKILL.md /path/to/your/skills/my-new-skill/SKILL.md
 | [sql](skills/sql/SKILL.md) | Write and optimize SQL queries safely (with guards for DELETE/UPDATE) |
 | [database-schema](skills/database-schema/SKILL.md) | Schema design with migration + rollback scripts |
 
+### Agent-Driven Project Management
+
+No PM needed. Developers check into a shared `TEAM.md`. Agents handle the rest.
+
+| Skill | What It Does |
+|-------|-------------|
+| [daily-checkin](skills/daily-checkin/SKILL.md) | Dev runs this once a day — agent reads git log + sprint board, writes structured entry to `TEAM.md` |
+| [team-digest](skills/team-digest/SKILL.md) | Reads `TEAM.md` + `SPRINT.md`, produces team summary, sprint velocity, and blocker table |
+
+**How to set up:**
+1. Copy `templates/TEAM.md` and `templates/SPRINT.md` to your project root
+2. Fill in `SPRINT.md` with your tasks and owners
+3. Each dev runs `/daily-checkin` — takes 30 seconds
+4. Run `/team-digest` any time (or schedule it at 9:30am via `/schedule`)
+
+### Developer Workflow (manual tickets + retros)
+
+| Skill | What It Does |
+|-------|-------------|
+| [sprint-planning](skills/sprint-planning/SKILL.md) | Break a feature or milestone into sprint tasks with sizing, priority, dependencies, and risks |
+| [ticket-writer](skills/ticket-writer/SKILL.md) | Turn rough notes into a well-formed Jira/Linear/GitHub Issue with AC, technical notes, and scope |
+| [standup-writer](skills/standup-writer/SKILL.md) | Write daily or weekly standup updates from git log, task list, or rough notes |
+| [retro](skills/retro/SKILL.md) | Run a sprint retro or incident post-mortem — blameless, action-oriented, with owners and due dates |
+
 ### Observability
 
 | Skill | What It Does |
@@ -80,7 +104,34 @@ cp skills/code-review/SKILL.md /path/to/your/skills/my-new-skill/SKILL.md
 
 | Skill | What It Does |
 |-------|-------------|
-| [fitness-coach](skills/fitness-coach/safety/SKILL.md) | Shows how to split a long skill into focused sub-skills |
+| [fitness-coach](skills/fitness-coach/) | Pattern 7 example: 4 focused sub-skills (exercise, nutrition, recovery, safety) under 200 lines each |
+
+## Installing Skills for Claude Code
+
+Claude Code looks for skills in two places:
+
+| Scope | Path | When to use |
+|-------|------|-------------|
+| Global (all projects) | `~/.claude/skills/<skill-name>/SKILL.md` | Skills you use everywhere |
+| Project-local | `.claude/skills/<skill-name>/SKILL.md` | Skills specific to one repo |
+
+Use the install script to symlink skills from this repo — changes to source propagate automatically:
+
+```bash
+# Install all skills globally (available in every Claude Code session)
+./scripts/install-skills.sh --global
+
+# Install all skills for the current project only
+./scripts/install-skills.sh --project
+
+# Install specific skills globally
+./scripts/install-skills.sh --global code-review debugging
+
+# Check what's installed vs. available
+./scripts/install-skills.sh --status
+```
+
+Invoke skills by name in any Claude Code session: `"run a code review"` or `/code-review`.
 
 ## Multi-Tool Support
 
@@ -92,7 +143,7 @@ Skills are plain Markdown — the same SKILL.md works across all tools. Run the 
 
 | Tool | Exported to | How to invoke | Setup guide |
 |------|-------------|---------------|-------------|
-| Claude Code | `skills/` (native) | Natural language or `/skill-name` | Native |
+| Claude Code | `~/.claude/skills/` or `.claude/skills/` | Natural language or `/skill-name` | See above |
 | Gemini CLI | `.gemini/skills/` | `/skill-name` | [gemini-cli-setup.md](docs/gemini-cli-setup.md) |
 | Cursor | `.cursor/rules/*.mdc` | `@skill-name` in chat | [cursor-setup.md](docs/cursor-setup.md) |
 | GitHub Copilot | `.github/skills/` | `#file:.github/skills/name.md` | [copilot-setup.md](docs/copilot-setup.md) |

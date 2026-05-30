@@ -9,6 +9,8 @@ description: >
   load', or 'reduce bundle size'. Do NOT optimize without measuring first —
   this skill enforces measure-first. Do NOT use for correctness bugs — use
   /skills/debugging instead.
+version: "1.0"
+updated: "2026-05-30"
 ---
 
 # Performance Skill
