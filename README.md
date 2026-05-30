@@ -1,4 +1,4 @@
-# Claude Skill Patterns
+# AI-Powered Developer & PM Playbook
 
 **7 battle-tested patterns for writing AI skills that work consistently — across Claude, Copilot, Codex, Cursor, Windsurf, and Gemini CLI.**
 
